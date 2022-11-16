@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Package Finder</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+   integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+   crossorigin=""/> 
+   <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+   integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+   crossorigin=""></script>
+  
+   <!--Used to parse csv file of zipcodes and corresponding lattitude and longitude-->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js" integrity="sha512-SGWgwwRA8xZgEoKiex3UubkSkV1zSE1BS6O4pXcaxcNtUlQsOmOmhVnDwIvqGRfEmuz83tIGL13cXMZn6upPyg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js" integrity="sha512-Abr21JO2YqcJ03XGZRPuZSWKBhJpUAR6+2wH5zBeO4wAw4oksr8PRdF+BKIRsxvCdq+Mv4670rZ+dLnIyabbGw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+     <div id="popup-wrapper" class="hidden">
+
+        <div id="popup-heading-wrapper">
+            <h1 class="header">Tracking History</h1>
+            <img src="./img/x-icon.png"  id="x-icon" alt="X">
+        </div>
+
+        <!-- Tracking history table -->
+        <div id="msg-wrapper">
+            <!-- <div class="pop-row">
+                <div class="status-icon">
+                </div>
+                <div class="pop-text-wrapper">
+                    <div class="pop-text">
+                        The package has been delivered.
+                    </div>
+                    <div class="pop-text">
+                        Lancaster, PA, 17601
+                    </div>
+                    <div class="pop-text right">
+                        November 7, 12:30 PM
+                    </div>
+                </div>
+            </div> -->
+          </div>
+        </div>
+        <main id="main">
+            <label class="text-box center">
+                <input type="text" placeholder="&nbsp;" id="search-bar">
+                <span class="placeholder">Enter Tracking # or 'test' </span>
+                <span class="error-msg"></span>
+            </label>
+    
+            <div id="tracking-status-container" class="center high-map">
+                <h1 id="tracking-status" class="header"></h1>
+                <h2 id="deliver-date"></h2>
+                <button class="hidden map-button" id="map-button">View Tracking History</button>
+            </div>
+        <div id="map-container">
+            <div id="map"></div>
+        </div>   
+        </main>
+      
+    <script type="module" src="/js/index.js"></script>
+    <script src="/js/L.Polyline.SnakeAnim.js"></script>
+</body>
+</html>
+
+
