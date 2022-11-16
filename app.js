@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 3000
+//const port = 3000
 const Easypost = require('@easypost/api');
 const bodyParser = require('body-parser')
 const tnv = require('tracking-number-validation')
@@ -17,7 +17,6 @@ app.get('', (req,res) => {
 
 const createTracker = (code,carrier,isTest) => {
   const apiKey = isTest ? process.env.TEST_API : process.env.PRODUCTION_API;
-  //const apiKey = process.env.TEST_API
   const easypostApi = new Easypost(apiKey)
   return new easypostApi.Tracker({
     tracking_code: code,
@@ -78,7 +77,7 @@ function zipsToLatLon(zipcodes) {
   return latLongs
 }
 
-app.listen(port, ()=> console.log(`Server running at ${port}`))
+app.listen(port, ()=> console.log(`Server running at ${PORT}`))
 
 
 

@@ -125,17 +125,10 @@ import axios from 'https://cdn.skypack.dev/axios';
       return div
     }
 
-
-
-
-
-
-
     function removeSearchBar(searchBar)
     {
       searchBar.remove()
     }
-
 
     function validateSearch(search) {
       if(search.toLowerCase() == "test") { 
@@ -165,8 +158,6 @@ import axios from 'https://cdn.skypack.dev/axios';
       const southEast = L.latLng(24,-67),
       northWest = L.latLng(50,-125),
       bounds = L.latLngBounds(southEast, northWest); 
-      //L.rectangle(bounds).addTo(map)
-       //
       setTimeout(function(){map.invalidateSize(),
         map.fitBounds(bounds, {paddingTopLeft: [0,150]})
       }, 1);

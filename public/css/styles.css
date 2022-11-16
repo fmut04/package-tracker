@@ -16,18 +16,12 @@ html {
     background-color: #3AAFA9;
 }
 
-/* 
-Purple Bckgd 
-#231fa98f 
-*/
-
 .leaflet-container {
    background:#17252A;
    border-radius: 15px;
 }
 
 .header {  
-  /* font-size: clamp(3vw,28px); */
   font-size: clamp(1.5rem, 5.9vw - 1.1rem, 2.6rem);
   color: #38f;
   margin: 1vh 0px;
@@ -110,14 +104,12 @@ Purple Bckgd
     position: absolute;
     top: 6vh;
     left: 50%;
-    /* width: 63%; */
     height: 85vh;
     background-color: #fcfcfc;
     z-index: 999;
     transform: translate(-50%, 0);
     border-radius: 25px;
     overflow: scroll;
-    /* max-width: 600px; */
     width: clamp(350px,63vw,600px);
   }
 
@@ -179,11 +171,6 @@ Purple Bckgd
     background-color: green
   }
 
- 
-
-
-
-
 
   
   .text-box input {
@@ -198,7 +185,6 @@ Purple Bckgd
     width: 40vw;
     outline: none;
     font-size: 14px;
-
   }
   
   .text-box .placeholder {
