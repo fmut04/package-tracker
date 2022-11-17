@@ -1,6 +1,10 @@
 {
     "version": 2,
     "name": "package-tracker",
+    "builds": [
+    { "src": "*.html", "use": "@vercel/static" },
+       { "src": "app.js", "use": "@vercel/node" }
+    ],
     "routes": [
        { "src": "/(.*)", "dest": "/app.js" }
     ]
