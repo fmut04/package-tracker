@@ -77,7 +77,7 @@ function zipsToLatLon(zipcodes) {
   return latLongs
 }
 
-app.listen(port, ()=> console.log(`Server running at ${{PORT}}`))
+app.listen(port, ()=> console.log(`Server is running at ${process.env.PORT}`))
 
 
 
