@@ -15,8 +15,8 @@ app.get('', (req,res) => {
 })
 
 const createTracker = (code,carrier,isTest) => {
-  console.log(TEST_API, PRODUCTION_API)
-  const apiKey = isTest ? TEST_API : PRODUCTION_API;
+  console.log(process.env.TEST_API, process.env.PRODUCTION_API)
+  const apiKey = isTest ? process.env.TEST_API : process.env.PRODUCTION_API;
   const easypostApi = new Easypost(apiKey)
   return new easypostApi.Tracker({
     tracking_code: code,
@@ -77,7 +77,7 @@ function zipsToLatLon(zipcodes) {
   return latLongs
 }
 
-app.listen(PORT, ()=> console.log(`Server is running at ${PORT}`))
+app.listen(process.env.PORT, ()=> console.log(`Server is running at ${process.env.PORT}`))
 
 
 
