@@ -1,7 +1,0 @@
-{
-    "version": 2,
-    "name": "package-tracker",
-    "routes": [
-       { "src": "/(.*)", "dest": "/app.js" }
-    ]
- }

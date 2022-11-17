@@ -11,7 +11,7 @@ app.use('/map', express.static(__dirname + 'public/map'))
 require('dotenv').config()
 const TEST_TRACKING_NUMBER = "EZ4000000004"
 app.get('', (req,res) => {
-    res.sendFile(__dirname + '/index.html')
+    res.sendFile(__dirname + '/views/index.html')
 })
 
 const createTracker = (code,carrier,isTest) => {
