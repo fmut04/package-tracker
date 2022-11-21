@@ -18,7 +18,7 @@ app.get('', (req,res) => {
 })
 
 const createTracker = (code,carrier,isTest) => {
-  
+  crossOriginIsolated.log("create tracker")
   const apiKey = isTest ? process.env.TEST_API : process.env.PRODUCTION_API;
   console.log(apiKey)
   const easypostApi = new Easypost(apiKey)
@@ -30,7 +30,6 @@ const createTracker = (code,carrier,isTest) => {
 
 app.post('/tracker', (req,res) => {
   let { tracking_code } = req.body;
-  const tracker = createTracker(tracking_code, 'USPS')
   if(tnv.isValid(tracking_code) || tracking_code == TEST_TRACKING_NUMBER) {
     const tracker = createTracker(tracking_code, 'USPS', tracking_code == TEST_TRACKING_NUMBER)
     tracker.save().then(response => {
