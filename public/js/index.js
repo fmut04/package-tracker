@@ -147,7 +147,7 @@ import axios from 'https://cdn.skypack.dev/axios';
      }
 
     function createMap() {
-      const geojsonLayer = new L.GeoJSON.AJAX("/map.geojson"); 
+      const geojsonLayer = new L.GeoJSON.AJAX("/public/map.geojson"); 
       geojsonLayer.addTo(map);
       setMapView(map)
     }
