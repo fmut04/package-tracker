@@ -18,7 +18,6 @@ app.get('', (req,res) => {
 })
 
 const createTracker = (code,carrier,isTest) => {
-  crossOriginIsolated.log("create tracker")
   const apiKey = isTest ? process.env.TEST_API : process.env.PRODUCTION_API;
   console.log(apiKey)
   const easypostApi = new Easypost(apiKey)
