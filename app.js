@@ -18,7 +18,7 @@ app.get('', (req,res) => {
 })
 
 const createTracker = (code,carrier,isTest) => {
-  console.log(TEST_API, PRODUCTION_API)
+  console.log(process.env.TEST_API, process.env.PRODUCTION_API)
   const apiKey = isTest ? process.env.TEST_API : process.env.PRODUCTION_API;
   const easypostApi = new Easypost(apiKey)
   return new easypostApi.Tracker({
