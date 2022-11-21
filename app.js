@@ -5,16 +5,16 @@ const bodyParser = require('body-parser')
 const tnv = require('tracking-number-validation')
 app.use(bodyParser.json())
 app.use(express.static('public'))
-const host = req.get('host');
-console.log(host)
-app.use('/css', express.static(host + '/public/css'))
-app.use('/js', express.static(host + '/public/js'))
-app.use('/map', express.static(host + '/public/map'))
+//const host = req.get('host');
+//console.log(host)
+app.use('/css', express.static(__dirname + '/public/css'))
+app.use('/js', express.static(__dirname + '/public/js'))
+app.use('/map', express.static(__dirname + '/public/map'))
 require('dotenv').config()
 
 const TEST_TRACKING_NUMBER = "EZ4000000004"
 app.get('', (req,res) => {
-    res.sendFile(host + '/index.html')
+    res.sendFile(__dirname + '/index.html')
 })
 
 const createTracker = (code,carrier,isTest) => {
