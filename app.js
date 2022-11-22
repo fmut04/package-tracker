@@ -19,7 +19,7 @@ app.get('', (req,res) => {
 })
 
 const testApi = new Easypost(process.env.TEST_API)
-const productionApi = new Easypost(process.env.PRODUCTION_API)
+//const productionApi = new Easypost(process.env.PRODUCTION_API)
 const createTracker = (code,carrier,isTest) => {
   if(isTest) {
     return new testApi.Tracker({
