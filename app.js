@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const Easypost = require('@easypost/api');
 const bodyParser = require('body-parser')
+const fs = require('fs');
 const tnv = require('tracking-number-validation')
 app.use(bodyParser.json())
 app.use(express.static('public'))
@@ -17,14 +18,19 @@ app.get('', (req,res) => {
     res.sendFile(__dirname + '/index.html')
 })
 
+const testApi = new Easypost(process.env.TEST_API)
+const productionApi = new Easypost(process.env.PRODUCTION_API)
 const createTracker = (code,carrier,isTest) => {
-  const apiKey = isTest ? process.env.TEST_API : process.env.PRODUCTION_API;
-  console.log(apiKey)
-  const easypostApi = new Easypost(apiKey)
-  return new easypostApi.Tracker({
-    tracking_code: code,
-    carrier: carrier,
-  });
+  if(isTest) {
+    return new testApi.Tracker({
+      tracking_code: code,
+      carrier: carrier,
+    });
+  } 
+    return new productionApi.Tracker({
+      tracking_code: code,
+      carrier: carrier,
+    });
 }
 
 app.post('/tracker', (req,res) => {
@@ -40,7 +46,7 @@ app.post('/tracker', (req,res) => {
   }
 })
 
-const fs = require('fs');
+
 const papa = require('papaparse');
 const file = fs.createReadStream('zip_lat_lon.csv');
 
@@ -80,7 +86,6 @@ function zipsToLatLon(zipcodes) {
 }
 
 app.listen(process.env.PORT ?? 3000, ()=> console.log(`Server is running at ${process.env.PORT}`))
-
 
 
 
