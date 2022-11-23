@@ -21,16 +21,16 @@ app.get('', (req,res) => {
 const testApi = new Easypost(toString(process.env.TEST_API))
 //const productionApi = new Easypost(process.env.PRODUCTION_API)
 const createTracker = (code,carrier,isTest) => {
-  if(isTest) {
-    return new testApi.Tracker({
-      tracking_code: code,
-      carrier: carrier,
-    });
-  } 
-    return new productionApi.Tracker({
-      tracking_code: code,
-      carrier: carrier,
-    });
+  // if(isTest) {
+  //   return new testApi.Tracker({
+  //     tracking_code: code,
+  //     carrier: carrier,
+  //   });
+  // } 
+  //   return new productionApi.Tracker({
+  //     tracking_code: code,
+  //     carrier: carrier,
+  //   });
 }
 
 app.post('/tracker', (req,res) => {
@@ -40,10 +40,8 @@ app.post('/tracker', (req,res) => {
     tracker.save().then(response => {
       res.send(response)
   })
-  }
-  else  {
+}
     res.send("Error")
-  }
 })
 
 
