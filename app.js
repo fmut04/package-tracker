@@ -42,7 +42,9 @@ app.post('/tracker', (req,res) => {
       res.send(response)
  })
 }
-    res.send("Error")
+else  {
+  res.send("Error")
+}
 })
 
 
