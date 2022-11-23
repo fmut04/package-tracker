@@ -36,10 +36,11 @@ const createTracker = (code,carrier,isTest) => {
 app.post('/tracker', (req,res) => {
   let { tracking_code } = req.body;
   if(tnv.isValid(tracking_code) || tracking_code == TEST_TRACKING_NUMBER) {
-    const tracker = createTracker(tracking_code, 'USPS', tracking_code == TEST_TRACKING_NUMBER)
-    tracker.save().then(response => {
-      res.send(response)
-  })
+    // const tracker = createTracker(tracking_code, 'USPS', tracking_code == TEST_TRACKING_NUMBER)
+    // tracker.save().then(response => {
+    //   res.send(response)
+    res.send("test")
+ // })
 }
     res.send("Error")
 })
