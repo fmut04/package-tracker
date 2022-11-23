@@ -6,6 +6,7 @@ const fs = require('fs');
 const tnv = require('tracking-number-validation')
 app.use(bodyParser.json())
 app.use(express.static('public'))
+const https = require("https")
 //const host = req.get('host');
 //console.log(host)
 app.use('/css', express.static(__dirname + '/public/css'))
@@ -19,28 +20,27 @@ app.get('', (req,res) => {
 })
 
 const testApi = new Easypost(toString(process.env.TEST_API))
-//const productionApi = new Easypost(process.env.PRODUCTION_API)
+const productionApi = new Easypost(process.env.PRODUCTION_API)
 const createTracker = (code,carrier,isTest) => {
-  // if(isTest) {
-  //   return new testApi.Tracker({
-  //     tracking_code: code,
-  //     carrier: carrier,
-  //   });
-  // } 
-  //   return new productionApi.Tracker({
-  //     tracking_code: code,
-  //     carrier: carrier,
-  //   });
+  if(isTest) {
+    return new testApi.Tracker({
+      tracking_code: code,
+      carrier: carrier,
+    });
+  } 
+    return new productionApi.Tracker({
+      tracking_code: code,
+      carrier: carrier,
+    });
 }
 
 app.post('/tracker', (req,res) => {
   let { tracking_code } = req.body;
   if(tnv.isValid(tracking_code) || tracking_code == TEST_TRACKING_NUMBER) {
-    // const tracker = createTracker(tracking_code, 'USPS', tracking_code == TEST_TRACKING_NUMBER)
-    // tracker.save().then(response => {
-    //   res.send(response)
-    res.send("test")
- // })
+    const tracker = createTracker(tracking_code, 'USPS', tracking_code == TEST_TRACKING_NUMBER)
+    tracker.save().then(response => {
+      res.send(response)
+ })
 }
     res.send("Error")
 })
@@ -84,7 +84,24 @@ function zipsToLatLon(zipcodes) {
   return latLongs
 }
 
-app.listen(process.env.PORT ?? 3000, ()=> console.log(`Server is running at ${process.env.PORT}`))
+//app.listen(process.env.PORT ?? 3000, ()=> console.log(`Server is running at ${process.env.PORT}`))
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+ 
 
+  
+// Creating object of key and certificate
+// for SSL
+const options = {
+  key: fs.readFileSync("server.key"),
+  cert: fs.readFileSync("server.cert"),
+};
+  
+// Creating https server by passing
+// options and app object
+https.createServer(options, app)
+.listen(process.env.PORT ?? 3000, function (req, res) {
+  console.log(`Server started at port ${process.env.PORT ?? 3000}`);
+});
 
