@@ -4,35 +4,25 @@ const Easypost = require('@easypost/api');
 const bodyParser = require('body-parser')
 const fs = require('fs');
 const tnv = require('tracking-number-validation')
-const axios = require("axios")
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 app.use(express.static('public'))
-const https = require("https")
-//const host = req.get('host');
-//console.log(host)
 app.use('/css', express.static(__dirname + '/public/css'))
 app.use('/js', express.static(__dirname + '/public/js'))
 app.use('/map', express.static(__dirname + '/public/map'))
 require('dotenv').config()
 const TEST_TRACKING_NUMBER = "EZ4000000004"
+
 app.get('', (req,res) => {
     res.sendFile(__dirname + '/index.html')
 })
 
 
-var key = process.env.TEST_API
-const testApi = new Easypost(key)
-const productionApi = new Easypost(process.env.PRODUCTION_API)
+
 const createTracker = (code,carrier,isTest) => {
-  console.log(testApi)
-  if(isTest) {
-    return new testApi.Tracker({
-      tracking_code: code,
-      carrier: carrier,
-    });
-  } 
-    return new productionApi.Tracker({
+  const apiKey = isTest ? process.env.TEST_API : process.env.PRODUCTION_API
+  const api = new Easypost(apiKey)
+    return new api.Tracker({
       tracking_code: code,
       carrier: carrier,
     });
@@ -50,7 +40,6 @@ else  {
   res.send("Error")
 }
 })
-
 
 const papa = require('papaparse');
 const { response } = require('express');
@@ -93,99 +82,3 @@ function zipsToLatLon(zipcodes) {
 
 app.listen(process.env.PORT ?? 3000, ()=> console.log(`Server is running at ${process.env.PORT}`))
 
-
- 
-
-  
-// Creating object of key and certificate
-// for SSL
-// const options = {
-//   key: fs.readFileSync("server.key"),
-//   cert: fs.readFileSync("server.cert"),
-// };
-  
-// Creating https server by passing
-// options and app object
-// https.createServer(options, app)
-// .listen(process.env.PORT ?? 3000, function (req, res) {
-//   console.log(`Server started at port ${process.env.PORT ?? 3000}`);
-// });
-
-// app.post('/tracker', (req,res) => {
-
-// let { tracking_code } = req.body
-// console.log(tracking_code)
-// const data = {
-//   "tracker": {
-//     "tracking_code": tracking_code,
-//     "carrier": "USPS"
-//   }
-// }
-// var isTest = !tnv.isValid(tracking_code) || tracking_code == TEST_TRACKING_NUMBER
-// const username = isTest ? process.env.TEST_API : process.env.PRODUCTION_API
-// const password = ''
-// const token = Buffer.from(`${username}:${password}`).toString("base64")
-// axios
-// .post('https://api.easypost.com/v2/trackers', data, {
-//   headers:{
-//     "Authorization": `Basic ${token}`
-//   },
-// })
-// .then(response => {
-//   res.send(response.data)
-// })
-// .catch(err => {
-//   console.error(err)
-// })
-// })
-
-
-
-
-
-
-
-
-
-
-
-
-// const data = JSON.stringify({
-//   name: 'John Doe',
-//   job: 'Content Writer'
-// })
-
-// const options = {
-//   hostname: 'https://api.easypost.com',
-//   path: '/v2/trackers',
-//   method: 'POST',
-//   headers: {
-//     'Content-Type': 'application/json',
-//     'Content-Length': data.length
-//   },
-//   auth: {
-//     'username': process.env.TEST_API,
-//     'password': ''
-//   }
-// }
-
-// const req = https
-//   .request(options, res => {
-//     let data = ''
-
-//     console.log('Status Code:', res.statusCode)
-
-//     res.on('data', chunk => {
-//       data += chunk
-//     })
-
-//     res.on('end', () => {
-//       console.log('Body: ', JSON.parse(data))
-//     })
-//   })
-//   .on('error', err => {
-//     console.log('Error: ', err.message)
-//   })
-
-// req.write(data)
-// req.end()
