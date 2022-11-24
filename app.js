@@ -4,6 +4,8 @@ const Easypost = require('@easypost/api');
 const bodyParser = require('body-parser')
 const fs = require('fs');
 const tnv = require('tracking-number-validation')
+const axios = require("axios")
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 app.use(express.static('public'))
 const https = require("https")
@@ -13,7 +15,6 @@ app.use('/css', express.static(__dirname + '/public/css'))
 app.use('/js', express.static(__dirname + '/public/js'))
 app.use('/map', express.static(__dirname + '/public/map'))
 require('dotenv').config()
-
 const TEST_TRACKING_NUMBER = "EZ4000000004"
 app.get('', (req,res) => {
     res.sendFile(__dirname + '/index.html')
@@ -34,21 +35,22 @@ const createTracker = (code,carrier,isTest) => {
     });
 }
 
-app.post('/tracker', (req,res) => {
-  let { tracking_code } = req.body;
-  if(tnv.isValid(tracking_code) || tracking_code == TEST_TRACKING_NUMBER) {
-    const tracker = createTracker(tracking_code, 'USPS', tracking_code == TEST_TRACKING_NUMBER)
-    tracker.save().then(response => {
-      res.send(response)
- })
-}
-else  {
-  res.send("Error")
-}
-})
+// app.post('/tracker', (req,res) => {
+//   let { tracking_code } = req.body;
+//   if(tnv.isValid(tracking_code) || tracking_code == TEST_TRACKING_NUMBER) {
+//     const tracker = createTracker(tracking_code, 'USPS', tracking_code == TEST_TRACKING_NUMBER)
+//     tracker.save().then(response => {
+//       res.send(response)
+//  })
+// }
+// else  {
+//   res.send("Error")
+// }
+// })
 
 
 const papa = require('papaparse');
+const { response } = require('express');
 const file = fs.createReadStream('zip_lat_lon.csv');
 
 // Creates a hash map
@@ -86,24 +88,105 @@ function zipsToLatLon(zipcodes) {
   return latLongs
 }
 
-//app.listen(process.env.PORT ?? 3000, ()=> console.log(`Server is running at ${process.env.PORT}`))
+app.listen(process.env.PORT ?? 3000, ()=> console.log(`Server is running at ${process.env.PORT}`))
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+
  
 
   
 // Creating object of key and certificate
 // for SSL
-const options = {
-  key: fs.readFileSync("server.key"),
-  cert: fs.readFileSync("server.cert"),
-};
+// const options = {
+//   key: fs.readFileSync("server.key"),
+//   cert: fs.readFileSync("server.cert"),
+// };
   
 // Creating https server by passing
 // options and app object
-https.createServer(options, app)
-.listen(process.env.PORT ?? 3000, function (req, res) {
-  console.log(`Server started at port ${process.env.PORT ?? 3000}`);
-});
+// https.createServer(options, app)
+// .listen(process.env.PORT ?? 3000, function (req, res) {
+//   console.log(`Server started at port ${process.env.PORT ?? 3000}`);
+// });
 
+app.post('/tracker', (req,res) => {
+const encodedParams = new URLSearchParams();
+encodedParams.append("trackingCode", "EZ4000000004");
+encodedParams.append("apiKey", "EZTK3a2d4b398f364d0e89b4bedae7b6499fmaj3ZR97qsVxMFH0dslvkw");
+
+// const options = {
+//   method: 'POST',
+//   url: 'https://api.easypost.com/v2/trackers ',
+//   headers: {
+//     'content-type': 'application/json',
+//   },
+//   data: {
+//     "tracker": {
+
+//     }
+//   }
+// };
+let { tracking_code } = req.body
+
+const data = {
+  "tracker": {
+    "tracking_code": tracking_code,
+    "carrier": "USPS"
+  }
+}
+const username = process.env.TEST_API
+const password = ''
+const token = Buffer.from(`${username}:${password}`).toString("base64")
+axios
+.post('https://api.easypost.com/v2/trackers', data, {
+  headers:{
+    "Authorization": `Basic ${token}`
+  },
+})
+.then(response => {
+  res.send(response.data)
+})
+.catch(err => {
+  console.error(err)
+})
+})
+
+
+// const data = JSON.stringify({
+//   name: 'John Doe',
+//   job: 'Content Writer'
+// })
+
+// const options = {
+//   hostname: 'https://api.easypost.com',
+//   path: '/v2/trackers',
+//   method: 'POST',
+//   headers: {
+//     'Content-Type': 'application/json',
+//     'Content-Length': data.length
+//   },
+//   auth: {
+//     'username': process.env.TEST_API,
+//     'password': ''
+//   }
+// }
+
+// const req = https
+//   .request(options, res => {
+//     let data = ''
+
+//     console.log('Status Code:', res.statusCode)
+
+//     res.on('data', chunk => {
+//       data += chunk
+//     })
+
+//     res.on('end', () => {
+//       console.log('Body: ', JSON.parse(data))
+//     })
+//   })
+//   .on('error', err => {
+//     console.log('Error: ', err.message)
+//   })
+
+// req.write(data)
+// req.end()

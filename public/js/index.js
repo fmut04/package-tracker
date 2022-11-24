@@ -20,7 +20,8 @@ import axios from 'https://cdn.skypack.dev/axios';
           isSearching = true;
           const code = validateSearch(searchBar.value)
           getTrackerData(code).then((res) => {
-            if(res.data!="Error")  updateMap(res,searchBar);
+            const tracker = res.data;
+            if(tracker!="Error")  updateMap(tracker,searchBar);
             else displayError(searchBar)
             isSearching=false;
           })
@@ -31,17 +32,16 @@ import axios from 'https://cdn.skypack.dev/axios';
       searchBar.value = "Error, Try Again."
     }
 
-    function updateMap(res,searchBar) {
+    function updateMap(tracker,searchBar) {
         const button = document.getElementById('map-button')
-        displayInfo(searchBar,button,res)
-        updateTrackingDetails(res)
+        displayInfo(searchBar,button,tracker)
+        updateTrackingDetails(tracker)
         searchBar.onkeydown = null
     }
 
     function displayInfo(searchBar,button,tracker)
     {
-      const tds = tracker.data.tracking_details
-      console.log(tds)
+      const tds = tracker.tracking_details
       displayButton(button,tds)
       displayTrackingMessage(tds[tds.length-1])
       removeSearchBar(searchBar)
@@ -167,7 +167,7 @@ import axios from 'https://cdn.skypack.dev/axios';
     }
 
    async function updateTrackingDetails(tracker) {
-    const tracking_details = tracker.data.tracking_details;
+    const tracking_details = tracker.tracking_details;
     let zipcodes = []
     getZipcodes(tracking_details, zipcodes)
     const latLngs = await zipcodesToLatLngs(zipcodes)
