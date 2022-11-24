@@ -56,10 +56,9 @@ import axios from 'https://cdn.skypack.dev/axios';
     }
 
     function displayTrackingMessage(currentStatus) { 
-      const currentMessage =  currentStatus.message
-      document.getElementById('tracking-status').innerHTML = `Package Status: ${currentMessage}`;
-      if (currentMessage == 'Delivered') {
-        document.getElementById('deliver-date').innerHTML = `${formatDateTime(currentStatus.dateTime)}`
+      document.getElementById('tracking-status').innerHTML = `Package Status: ${currentStatus.message}`;
+      if (currentStatus.status.toLowerCase() == 'delivered') {
+        document.getElementById('deliver-date').innerHTML = `${formatDateTime(currentStatus.datetime)}`
       }
     }
 
@@ -111,7 +110,7 @@ import axios from 'https://cdn.skypack.dev/axios';
     }
 
     function formatDateTime(dateTime) {
-      var d = new Date("2014-04-07T13:58:10.104Z")
+      var d = new Date(dateTime)
       return d.toLocaleString('en-US', { month:'short',day:'numeric',hour:'numeric' , minute:'numeric' });
     }
 

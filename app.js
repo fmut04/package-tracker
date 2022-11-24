@@ -23,6 +23,7 @@ app.get('', (req,res) => {
 const testApi = new Easypost(toString(process.env.TEST_API))
 const productionApi = new Easypost(process.env.PRODUCTION_API)
 const createTracker = (code,carrier,isTest) => {
+  
   if(isTest) {
     return new testApi.Tracker({
       tracking_code: code,
@@ -35,18 +36,18 @@ const createTracker = (code,carrier,isTest) => {
     });
 }
 
-// app.post('/tracker', (req,res) => {
-//   let { tracking_code } = req.body;
-//   if(tnv.isValid(tracking_code) || tracking_code == TEST_TRACKING_NUMBER) {
-//     const tracker = createTracker(tracking_code, 'USPS', tracking_code == TEST_TRACKING_NUMBER)
-//     tracker.save().then(response => {
-//       res.send(response)
-//  })
-// }
-// else  {
-//   res.send("Error")
-// }
-// })
+app.post('/tracker', (req,res) => {
+  let { tracking_code } = req.body;
+  if(tnv.isValid(tracking_code) || tracking_code == TEST_TRACKING_NUMBER) {
+    const tracker = createTracker(tracking_code, 'USPS', tracking_code == TEST_TRACKING_NUMBER)
+    tracker.save().then(response => {
+      res.send(response)
+ })
+}
+else  {
+  res.send("Error")
+}
+})
 
 
 const papa = require('papaparse');
@@ -108,47 +109,43 @@ app.listen(process.env.PORT ?? 3000, ()=> console.log(`Server is running at ${pr
 //   console.log(`Server started at port ${process.env.PORT ?? 3000}`);
 // });
 
-app.post('/tracker', (req,res) => {
-const encodedParams = new URLSearchParams();
-encodedParams.append("trackingCode", "EZ4000000004");
-encodedParams.append("apiKey", "EZTK3a2d4b398f364d0e89b4bedae7b6499fmaj3ZR97qsVxMFH0dslvkw");
+// app.post('/tracker', (req,res) => {
 
-// const options = {
-//   method: 'POST',
-//   url: 'https://api.easypost.com/v2/trackers ',
-//   headers: {
-//     'content-type': 'application/json',
-//   },
-//   data: {
-//     "tracker": {
-
-//     }
+// let { tracking_code } = req.body
+// console.log(tracking_code)
+// const data = {
+//   "tracker": {
+//     "tracking_code": tracking_code,
+//     "carrier": "USPS"
 //   }
-// };
-let { tracking_code } = req.body
+// }
+// var isTest = !tnv.isValid(tracking_code) || tracking_code == TEST_TRACKING_NUMBER
+// const username = isTest ? process.env.TEST_API : process.env.PRODUCTION_API
+// const password = ''
+// const token = Buffer.from(`${username}:${password}`).toString("base64")
+// axios
+// .post('https://api.easypost.com/v2/trackers', data, {
+//   headers:{
+//     "Authorization": `Basic ${token}`
+//   },
+// })
+// .then(response => {
+//   res.send(response.data)
+// })
+// .catch(err => {
+//   console.error(err)
+// })
+// })
 
-const data = {
-  "tracker": {
-    "tracking_code": tracking_code,
-    "carrier": "USPS"
-  }
-}
-const username = process.env.TEST_API
-const password = ''
-const token = Buffer.from(`${username}:${password}`).toString("base64")
-axios
-.post('https://api.easypost.com/v2/trackers', data, {
-  headers:{
-    "Authorization": `Basic ${token}`
-  },
-})
-.then(response => {
-  res.send(response.data)
-})
-.catch(err => {
-  console.error(err)
-})
-})
+
+
+
+
+
+
+
+
+
 
 
 // const data = JSON.stringify({
