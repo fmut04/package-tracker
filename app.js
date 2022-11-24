@@ -20,10 +20,12 @@ app.get('', (req,res) => {
     res.sendFile(__dirname + '/index.html')
 })
 
-const testApi = new Easypost(toString(process.env.TEST_API))
+
+var key = process.env.TEST_API
+const testApi = new Easypost(key)
 const productionApi = new Easypost(process.env.PRODUCTION_API)
 const createTracker = (code,carrier,isTest) => {
-  
+  console.log(testApi)
   if(isTest) {
     return new testApi.Tracker({
       tracking_code: code,
