@@ -8,10 +8,10 @@ import axios from 'https://cdn.skypack.dev/axios';
     main()
    async function main() {
     createMap()
-    getTrackingInfo()
+    handleTracking()
     }
    
-    async function getTrackingInfo() {
+    async function handleTracking() {
       const searchBar = document.getElementById("search-bar")
       let isSearching = false;
       searchBar.onkeydown = async function({key}) {

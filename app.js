@@ -19,19 +19,18 @@ app.get('', (req,res) => {
 
 
 
-const createTracker = (code,carrier,isTest) => {
+const createTracker = (code,isTest) => {
   const apiKey = isTest ? process.env.TEST_API : process.env.PRODUCTION_API
   const api = new Easypost(apiKey)
     return new api.Tracker({
       tracking_code: code,
-      carrier: carrier,
     });
 }
 
 app.post('/tracker', (req,res) => {
   let { tracking_code } = req.body;
   if(tnv.isValid(tracking_code) || tracking_code == TEST_TRACKING_NUMBER) {
-    const tracker = createTracker(tracking_code, 'USPS', tracking_code == TEST_TRACKING_NUMBER)
+    const tracker = createTracker(tracking_code, tracking_code == TEST_TRACKING_NUMBER)
     tracker.save().then(response => {
       res.send(response)
  })
