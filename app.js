@@ -4,7 +4,6 @@ const Easypost = require('@easypost/api');
 const bodyParser = require('body-parser')
 const fs = require('fs');
 const tnv = require('tracking-number-validation')
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 app.use(express.static('public'))
 app.use('/css', express.static(__dirname + '/public/css'))
@@ -16,8 +15,6 @@ const TEST_TRACKING_NUMBER = "EZ4000000004"
 app.get('', (req,res) => {
     res.sendFile(__dirname + '/index.html')
 })
-
-
 
 const createTracker = (code,isTest) => {
   const apiKey = isTest ? process.env.TEST_API : process.env.PRODUCTION_API
