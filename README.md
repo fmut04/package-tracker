@@ -2,7 +2,7 @@
 A full stack web app to track packages across the US. 
 
 TODO:
-Add package icon to title 
-remove map panning
-specify carrier in search for less errors
-improve mobile usability
+Add package icon to title \n
+remove map panning \n
+specify carrier in search for less errors \n
+improve mobile usability \n
