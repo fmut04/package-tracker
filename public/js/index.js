@@ -1,5 +1,3 @@
-import axios from 'https://cdn.skypack.dev/axios';
-
    
     Window.map = L.map('map', {
       zoomSnap: .1
